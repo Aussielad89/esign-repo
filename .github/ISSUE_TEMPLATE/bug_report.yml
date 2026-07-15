@@ -1,0 +1,39 @@
+name: Bug report
+description: Report a problem with esign-repo
+labels: [bug]
+body:
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Which tool?
+      options:
+        - esign-watcher
+        - esign-gui
+        - esign-netscan
+        - esign-repo core
+        - other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      placeholder: Describe the bug and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: false
+  - type: input
+    id: pyver
+    attributes:
+      label: Python version
+      placeholder: "3.11"
+    validations:
+      required: false
