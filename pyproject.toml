@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esign-repo"
+version = "0.1.0"
+description = "Offline ESign app-source repo builder: auto-watching IPA indexer, dark PySide6 GUI, and a stdlib-only LAN scanner."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "pyside6>=6.5",
+    "pillow>=10.0",
+    "watchdog>=3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-qt>=4"]
+
+[project.scripts]
+esign-watcher = "esign_watcher:main"
+esign-gui = "esign_gui:main"
+esign-netscan = "netscan:main"
+
+[tool.setuptools]
+py-modules = ["esign_repo", "esign_watcher", "esign_gui", "netscan"]

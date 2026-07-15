@@ -1,0 +1,4 @@
+# Runtime deps for the ESign tools (netscan.py is pure stdlib — no deps).
+pyside6>=6.5
+pillow>=10.0
+watchdog>=3.0
