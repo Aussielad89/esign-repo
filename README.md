@@ -141,3 +141,45 @@ traversal block), GUI logic (headless `offscreen` Qt), and scanner parsing.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Docs
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) — how the tools share the index, the
+  repo layout, data flow, and the `esign_source.json` entry contract.
+- [CONTRIBUTING.md](CONTRIBUTING.md) — dev setup, rules of thumb, how to
+  open a PR.
+
+## FAQ
+
+**Does ESign need a signed/hosted source?** No. ESign can add any reachable
+`http://` URL as a source. As long as your phone is on the same Wi-Fi as the
+PC running the server, `http://<PC-IP>:8080/esign_source.json` works. No TLS
+needed for local LAN use.
+
+**Why is my phone getting a 404 on the IPA?** The download URL is
+`/ipas/<name>.ipa`. The watcher **ingests** dropped IPAs into `ipas/` (and
+moves them out of the watched folder root), so the path resolves. If you point
+the server at a folder of IPAs that were *not* ingested, re-run
+`esign-watcher --dir <that folder> --once` to index them properly.
+
+**Can I run both the watcher and the GUI on the same repo?** Yes — they share
+`esign_repo.py` and the same `esign_source.json`. The watcher serves the repo
+live; the GUI edits it. Just point both at the same `--repo`/`--dir`.
+
+**Clone an app?** In the GUI, after loading an IPA, append `.clone` (or any
+suffix) to the **Bundle ID** field before **Add to Repo** — same app, distinct
+bundle id, so ESign treats it as a separate install.
+
+**`netscan` shows `?` for MAC/vendor?** Windows `arp -a` only lists hosts
+currently in the ARP cache. Firewalled hosts that didn't answer ping and aren't
+cached show `?`. Run a few pings to a host first to populate the cache.
+
+## Troubleshooting
+
+| Symptom | Fix |
+|----------|-----|
+| `pip install -e .` → build error | Upgrade build tooling: `python -m pip install -U pip setuptools wheel` |
+| GUI won't open (no display / headless) | It needs a desktop session; it's a Windows desktop app, not a server. Run it from a logged-in session. |
+| Port 8080 already in use | Pass `--port 9000` (watcher) / `--port 9000` (GUI server). |
+| Phone can't reach the server | Ensure PC firewall allows inbound TCP on the port; phone must be on the **same** subnet. `esign-netscan` prints your PC IP. |
+| `ModuleNotFoundError: pyside6` | `pip install pyside6`. `netscan.py` needs nothing. |
